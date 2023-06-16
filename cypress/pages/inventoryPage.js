@@ -63,6 +63,37 @@ class inventoryPage {
       return cy.get('[data-test="product_sort_container"]').select(option); 
     }
 
+    getInventoryList() {
+      var priceArray = Array(); 
+      let i = 0; 
+      cy.get('.inventory_item_price').each(($item) => {
+        cy.wrap($item)
+          .invoke('text')
+          .then((text) => {
+            priceArray[i] = parseInt(text.slice(1));
+            i++; 
+      return priceArray; 
+      })
+    })
+    return priceArray;
+    }
+
+    getItemNames() {
+      var nameArray = Array(); 
+      let i = 0; 
+      cy.get('.inventory_item_name').each(($item) => {
+        cy.wrap($item)
+          .invoke('text')
+          .then((text) => {
+            nameArray[i] = text;
+            console.log(nameArray[i])
+            i++; 
+      return nameArray; 
+      })
+    })
+    return nameArray;
+    }
+
     openBurgerMenu() {
       return cy.get('#react-burger-menu-btn').click(); 
     }

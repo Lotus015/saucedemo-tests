@@ -3,6 +3,8 @@
 import loginPage from "../pages/loginPage.js" 
 import inventoryPage from "../pages/inventoryPage.js" 
 import itemPage from "../pages/itemPage.js" 
+import cartPage from "../pages/cartPage.js"
+import { isSortedAscending, isSortedDescending, isSortedAlphabetically, isSortedReverseAlphabetically } from "../utils/utils.js"
 
 describe('Swag Labs purchase flow', () => {
 
@@ -17,8 +19,8 @@ describe('Swag Labs purchase flow', () => {
     cy.setCookie('session-username', 'standard_user'); 
     });
     afterEach(() => {
-      inventoryPage.openBurgerMenu(); 
-      inventoryPage.resetAppState(); 
+      // inventoryPage.openBurgerMenu(); 
+      // inventoryPage.resetAppState(); 
     })
 
     it('Adding an item to the cart - Inventory Page', () => {
@@ -51,25 +53,41 @@ describe('Swag Labs purchase flow', () => {
       itemPage.removeItemButton().should('not.exist'); 
     })
 
-    // it('Removing an item from the cart - Cart Page', () => {
-      
-    // })
+    it('Removing an item from the cart - Cart Page', () => {
+      inventoryPage.visit(); 
+      inventoryPage.addItemBackpack().click(); 
+      inventoryPage.shoppingCartButton().click(); 
+      cartPage.removeItemBackpack().click(); 
+      cartPage.removeItemBackpack().should('not.exist'); 
+    })
 
-    // it('Sorting - Price(low to high)', () => {
-      
-    // })
+    it('Sorting - Price(low to high)', () => {
+      inventoryPage.visit(); 
+      inventoryPage.selectSortingOption('lohi');
+      var priceArray = inventoryPage.getInventoryList(); 
+      cy.wrap(priceArray).then((arr) => isSortedAscending(arr));
+    })
 
-    // it('Sorting - Price(high to low)', () => {
-      
-    // })
+    it('Sorting - Price(high to low)', () => {
+      inventoryPage.visit(); 
+      inventoryPage.selectSortingOption('hilo');
+      var priceArray = inventoryPage.getInventoryList(); 
+      cy.wrap(priceArray).then((arr) => isSortedDescending(arr)); 
+    })
 
-    // it('Sorting - Name(A to Z)', () => {
-      
-    // })
+    it('Sorting - Name(A to Z)', () => {
+      inventoryPage.visit(); 
+      inventoryPage.selectSortingOption('az');
+      var nameArray = inventoryPage.getItemNames(); 
+      cy.wrap(nameArray).then((arr) => isSortedAlphabetically(arr));
+  })
 
-    // it('Sorting - Name(Z to A)', () => {
-      
-    // })
+    it('Sorting - Name(Z to A)', () => {
+      inventoryPage.visit(); 
+      inventoryPage.selectSortingOption('za');
+      var nameArray = inventoryPage.getItemNames(); 
+      cy.wrap(nameArray).then((arr) => isSortedReverseAlphabetically(arr));
+    })
 
     // it('Trying to checkout without providing the info', () => {
       
