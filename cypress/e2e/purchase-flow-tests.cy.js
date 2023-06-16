@@ -2,6 +2,7 @@
 
 import loginPage from "../pages/loginPage.js" 
 import inventoryPage from "../pages/inventoryPage.js" 
+import itemPage from "../pages/itemPage.js" 
 
 describe('Swag Labs purchase flow', () => {
 
@@ -35,13 +36,20 @@ describe('Swag Labs purchase flow', () => {
       inventoryPage.removeItemBackpack().should('not.exist'); 
     })
 
-    // it('Adding an item to the cart - Item Page', () => {
-      
-    // })
+    it('Adding an item to the cart - Item Page', () => {
+      inventoryPage.visit(); 
+      inventoryPage.itemPage().click(); 
+      itemPage.addItemButton().click(); 
+      itemPage.addItemButton().should('not.exist'); 
+    })
 
-    // it('Removing an item from the cart - Item Page', () => {
-      
-    // })
+    it('Removing an item from the cart - Item Page', () => {
+      inventoryPage.visit(); 
+      inventoryPage.itemPage().click(); 
+      itemPage.addItemButton().click(); 
+      itemPage.removeItemButton().click(); 
+      itemPage.removeItemButton().should('not.exist'); 
+    })
 
     // it('Removing an item from the cart - Cart Page', () => {
       

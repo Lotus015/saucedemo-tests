@@ -3,6 +3,10 @@ class inventoryPage {
       cy.visit("/inventory.html", {failOnStatusCode: false});
     }
    
+    itemPage() {
+      return cy.get('[id="item_4_img_link"]'); 
+    }
+    
     addItemBackpack() {
       return cy.get('[data-test="add-to-cart-sauce-labs-backpack"]');
     }
