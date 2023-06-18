@@ -3,9 +3,10 @@
 import loginPage from "../pages/loginPage.js" 
 import inventoryPage from "../pages/inventoryPage.js" 
 import itemPage from "../pages/itemPage.js" 
-import cartPage, { checkoutButton } from "../pages/cartPage.js"
+import cartPage from "../pages/cartPage.js"
 import { isSortedAscending, isSortedDescending, isSortedAlphabetically, isSortedReverseAlphabetically } from "../utils/utils.js"
-import checkoutStepOnePage, { errorMessageContainer } from "../pages/checkout-step-onePage.js"
+import checkoutStepOnePage from "../pages/checkout-step-onePage.js"
+import checkoutStepTwoPage from "../pages/checkout-step-twoPage.js"
 
 describe('Swag Labs purchase flow', () => {
 
@@ -20,8 +21,9 @@ describe('Swag Labs purchase flow', () => {
     cy.setCookie('session-username', 'standard_user'); 
     });
     afterEach(() => {
-      // inventoryPage.openBurgerMenu(); 
-      // inventoryPage.resetAppState(); 
+      inventoryPage.visit(); 
+      inventoryPage.openBurgerMenu(); 
+      inventoryPage.resetAppState(); 
     })
 
     it('Adding an item to the cart - Inventory Page', () => {
@@ -104,8 +106,30 @@ describe('Swag Labs purchase flow', () => {
       cy.url().should('eq', 'https://www.saucedemo.com/inventory.html'); 
     })
 
-    // it('Full purchase flow', () => {
-      
-    // })
+    it('Its impossible to checkout with no items in the cart', () => { //DEFECT - EXPECTED TO FAIL
+       checkoutStepOnePage.visit(); 
+       checkoutStepOnePage.firstNameInput('Miodrag'); 
+       checkoutStepOnePage.lastNameInput('Todorovic'); 
+       checkoutStepOnePage.zipCodeInput('15000'); 
+       checkoutStepOnePage.continueButton().click(); 
+       checkoutStepTwoPage.finishButton().should('be.disabled'); 
+    })
+
+    it('Full purchase flow', () => {
+      loginPage.visit(); 
+      loginPage.typeUsername('standard_user'); 
+      loginPage.typePassword('secret_sauce'); 
+      loginPage.clickLoginButton(); 
+      inventoryPage.addItemOnesie().click(); 
+      inventoryPage.shoppingCartButton().click(); 
+      cartPage.checkoutButton().click(); 
+      checkoutStepOnePage.firstNameInput('Miodrag'); 
+      checkoutStepOnePage.lastNameInput('Todorovic'); 
+      checkoutStepOnePage.zipCodeInput('15000'); 
+      checkoutStepOnePage.continueButton().click(); 
+      checkoutStepTwoPage.finishButton().click(); 
+      cy.url().should('eq', 'https://www.saucedemo.com/checkout-complete.html'); 
+      cy.get('#checkout_complete_container').should('be.visible'); 
+    })
 
 })

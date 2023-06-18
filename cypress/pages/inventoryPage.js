@@ -86,7 +86,6 @@ class inventoryPage {
           .invoke('text')
           .then((text) => {
             nameArray[i] = text;
-            console.log(nameArray[i])
             i++; 
       return nameArray; 
       })

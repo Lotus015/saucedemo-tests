@@ -12,7 +12,7 @@ class loginPage {
     }
    
     clickLoginButton() {
-      return cy.get('[data-test="login-button"]');
+      return cy.get('[data-test="login-button"]').click();
     }
 
   }
