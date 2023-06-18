@@ -3,8 +3,9 @@
 import loginPage from "../pages/loginPage.js" 
 import inventoryPage from "../pages/inventoryPage.js" 
 import itemPage from "../pages/itemPage.js" 
-import cartPage from "../pages/cartPage.js"
+import cartPage, { checkoutButton } from "../pages/cartPage.js"
 import { isSortedAscending, isSortedDescending, isSortedAlphabetically, isSortedReverseAlphabetically } from "../utils/utils.js"
+import checkoutStepOnePage, { errorMessageContainer } from "../pages/checkout-step-onePage.js"
 
 describe('Swag Labs purchase flow', () => {
 
@@ -89,13 +90,19 @@ describe('Swag Labs purchase flow', () => {
       cy.wrap(nameArray).then((arr) => isSortedReverseAlphabetically(arr));
     })
 
-    // it('Trying to checkout without providing the info', () => {
-      
-    // })
+    it('Trying to checkout without providing the info', () => {
+      checkoutStepOnePage.visit(); 
+      checkoutStepOnePage.continueButton().click(); 
+      checkoutStepOnePage.errorMessageContainer().should('be.visible'); 
+    })
 
-    // it('Canceling during checkout leads to the inventory page', () => {
-      
-    // })
+    it('Canceling during checkout leads to the inventory page', () => {
+      checkoutStepOnePage.visit(); 
+      checkoutStepOnePage.cancelButton().click();
+      cy.url().should('eq', 'https://www.saucedemo.com/cart.html'); 
+      cartPage.continueShoppingButton().click(); 
+      cy.url().should('eq', 'https://www.saucedemo.com/inventory.html'); 
+    })
 
     // it('Full purchase flow', () => {
       
