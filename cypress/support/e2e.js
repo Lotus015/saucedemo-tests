@@ -16,6 +16,10 @@
 // Import commands.js using ES2015 syntax:
 import './commands';
 import "cypress-localstorage-commands";
+import 'cypress-mochawesome-reporter/register';
+Cypress.Screenshot.defaults({
+    screenshotOnRunFailure: false
+  })
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
