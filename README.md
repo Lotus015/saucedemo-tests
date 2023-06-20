@@ -3,6 +3,8 @@
 End to end tests for the Swag Labs purchase flow. 
 
 Test cases cover the "happy path" of the purchase flow. Manual test cases can be found in the TESTCASES.md file. 
+Suite contains page object models of each page under test, they can be found in cypress/pages. 
+A couple of helpful utility functions for sorting/filtering tests can be found in cypress/utils. 
 
 **One of the automation tests fails, and this is expected, since the application has a bug, which is described in the BUGREPORT.md file**
 
